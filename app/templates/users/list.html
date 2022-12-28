@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="text-right my-3">
+        <a href="/admin/users/create" class="btn btn-primary" type="submit">
+            Thêm mới
+        </a>
+    </div>
+        <div class="col-md-12">
+            <table align="center" class="table table-bordered table-hover table-responsive">
+                <thead>
+                <tr>
+                    <th>Họ và tên</th>
+                    <th class"text-center">Ngày sinh</th>
+                    <th>Chức vụ</th>
+                    <th class"text-center">Giới tính</th>
+                    <th class"text-center">Số điện thoại</th>
+                    <th>Địa chỉ</th>
+                    <th>Xác thực</th>
+                    <th>CMND/CCCD</th>
+                    <th>BHYT</th>
+                    <th class"text-center">Số lần tiêm</th>
+                    <th style="min-width: 200px;">Mô tả</th>
+                    <th class"text-center">Thao tác</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entry in entries %}
+                <tr>
+                    <td class="align-middle">{{ entry.name }}</td>
+                    <td class="align-middle">{{ entry.dob }}</td>
+                    {% if entry.position == 1 %}
+                    <td class="align-middle">Cán bộ xã</td>
+                    {% elif entry.position == 2 %}
+                    <td class="align-middle">Cán bộ xử lý</td>
+                    {% else %}
+                    <td class="align-middle">Người dân</td>
+                    {% endif %}
+                    {% if entry.sex == 1 %}
+                    <td class="align-middle">Nam</td>
+                    {% elif entry.sex == 2 %}
+                    <td class="align-middle">Nữ</td>
+                    {% else %}
+                    <td class="align-middle">Khác</td>
+                    {% endif %}
+                    <td class="align-middle">{{ entry.phone }}</td>
+                    <td class="align-middle">{{ entry.village }}</td>
+                    {% if entry.enable == 1 %}
+                    <td class="align-middle">Đã xác thực</td>
+                    {% else %}
+                    <td class="align-middle">Chưa xác thực</td>
+                    {% endif %}
+                    <td class="align-middle">{{ entry.card }}</td>
+                    <td class="align-middle">{{ entry.health_insurance }}</td>
+                    <td class="align-middle">{{ entry.vaccine | length}}</td>
+                    <td class="align-middle">{{ entry.description }}</td>
+                    <td class="align-middle">
+                        <div class="d-flex justify-content-center">
+                            <button style="margin-right: 6px;" type="button" class="btn btn-outline-secondary">Sửa</button>
+                            <form action="/admin/users/delete/{{entry._id}}" method="post">
+                                <button type="submit" class="btn btn-outline-danger">Xóa</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
