@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-12">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <form name="create_user" id="create_user" action="/admin/users/create" method="post" onSubmit="return confirm('Tạo mới người dùng'?');">
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Họ và tên<span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" name="name" placeholder="Họ và tên" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Ngày sinh<span class="text-danger">*</span></label>
+                            <input class="form-control" type="date" name="dob" placeholder="Ngày sinh" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Quyền<span class="text-danger">*</span></label>
+                            <select name="position" class="form-select" aria-label="Chọn quyền" required>
+                                <option value="1">Cán bộ xã</option>
+                                <option value="2">Cán bộ xử lý</option>
+                                <option value="99">Người dân</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Giới tính<span class="text-danger">*</span></label>
+                            <select name="sex" class="form-select" aria-label="Chọn giới tính" required>
+                                <option value="1">Nam</option>
+                                <option value="0">Nữ</option>
+                                <option value="2">Khác</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Thôn<span class="text-danger">*</span></label>
+                            <select name="village_id" class="form-select" aria-label="Chọn thôn" required>
+                                {% for village in villages %}
+                                <option value="{{village._id}}">{{village.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label name="vaccine" class="mb-2">Vaccine<span class="text-danger">*</span></label>
+                            <div class="row">
+                                    <table class="table table-bordered table-hover" id="dynamic_field">
+                                      <tr>
+                                        <td><input multiple type="text" name="vaccine[][order]" placeholder="Thứ tự mũi tiêm" class="form-control" required/></td>
+                                        <td><input multiple type="text" name="vaccine[][name]" placeholder="Tên thuốc" class="form-control" required/></td>
+                                        <td><input multiple class="form-control" type="date" name="vaccine[][date]" placeholder="Ngày tiêm" required></td>
+                                        <td><button type="button" name="add" id="add" class="btn btn-primary">Thêm</button></td>  
+                                      </tr>
+                                    </table>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Số bảo hiểm y tế<span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" name="health_insurance" placeholder="Số bảo hiểm y tế" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Số chứng minh nhân dân<span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" name="card" placeholder="Số chứng minh nhân dân" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Số điện thoại<span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" name="phone" placeholder="Số điện thoại" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Ghi chú(dị ứng, bệnh nền,...)<span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" name="description" placeholder="Ghi chú" required>
+                        </div>
+                        <div class="text-right d-grid gap-2 d-md-block">
+                            <button class="btn btn-success" type="submit" name="submit">Thêm mới</button>
+                            <a href="/admin/users/list" class="btn btn-warning" type="button">Hủy bỏ</a>
+                          </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

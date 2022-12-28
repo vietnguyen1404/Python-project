@@ -3,8 +3,14 @@
 {% block content %}
 
 <div class="container">
+    <div>
+        <form action="/admin/users/create">
+            <button class="btn btn-primary" type="submit">
+                Thêm mới
+            </button>
+        </form>
+    </div>
     <div class="row">
-
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
@@ -16,9 +22,7 @@
                             <textarea class="form-control" name="description" cols="100"
                                       placeholder="Add a Description" required></textarea>
                         </div>
-                        <button class="btn btn-primary" type="submit">
-                            Add
-                        </button>
+                        
                     </form>
                 </div>
             </div>
@@ -29,28 +33,25 @@
                 <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Operations</th>
+                    <th>Name</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for entry in entries %}
                 <tr>
-                    <td>{{ entry.id }}</td>
-                    <td><strong>{{ entry.title }}</strong></td>
-                    <td>{{ entry.description }}</td>
+                    <td>{{ entry._id }}</td>
+                    <td><strong>{{ entry.name }}</strong></td>
                     <td>
                         <a class="{{ 'btn btn-success' if entry.status else 'btn btn-dark'}}"
-                           href="/turn/{{ entry.id }}">
+                           href="/turn/{{ entry._id }}">
                             Turn Status
                         </a>
                         <a class="btn btn-danger"
-                           href="/delete/{{ entry.id }}">
+                           href="/delete/{{ entry._id }}">
                             Delete
                         </a>
                         <a class="btn btn-info"
-                           href="/update/{{ entry.id }}">
+                           href="/update/{{ entry._id }}">
                             Edit
                         </a>
                     </td>
@@ -65,8 +66,3 @@
 </div>
 
 {% endblock %}
-
-
-
-
-
