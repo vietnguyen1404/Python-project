@@ -58,7 +58,7 @@
                     <td class="align-middle">{{ entry.description }}</td>
                     <td class="align-middle">
                         <div class="d-flex justify-content-center">
-                            <button style="margin-right: 6px;" type="button" class="btn btn-outline-secondary">Sửa</button>
+                            <a href="/admin/users/edit/{{entry._id}}" style="margin-right: 6px;" type="button" class="btn btn-outline-secondary">Sửa</a>
                             <form action="/admin/users/delete/{{entry._id}}" method="post">
                                 <button type="submit" class="btn btn-outline-danger">Xóa</button>
                             </form>
