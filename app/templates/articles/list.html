@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="text-right my-3">
+        {%if role_login == 1%}
+        <a href="/admin/articles/create" class="btn btn-primary" type="submit">
+            Thêm mới
+        </a>
+        {%endif%}
+    </div>
+        <div class="col-md-12">
+            <table align="center" class="table table-bordered table-hover table-responsive">
+                <thead>
+                <tr>
+                    <th class="align-top">Tiêu đề</th>
+                    <th class"text-center align-top">Nội dung</th>
+                    <th class="align-top">Ngày tạo</th>
+                    {%if role_login == 1%}
+                    <th class"text-center align-top">Thao tác</th>
+                    {%endif%}
+                </tr>
+                </thead>
+                <tbody>
+                {% for entry in entries %}
+                <tr>
+                    <td class="align-middle">{{ entry.title }}</td>
+                    <td class="align-middle">{{ entry.content }}</td>
+                    <td class="align-middle">{{ entry.created_at }}</td>
+                    {%if role_login == 1%}
+                    <td class="align-middle">
+                        <div class="d-flex justify-content-center">
+                            <a href="/admin/articles/edit/{{entry._id}}" style="margin-right: 6px;" type="button" class="btn btn-outline-secondary">Sửa</a>
+                            <form action="/admin/articles/delete/{{entry._id}}" method="post">
+                                <button type="submit" class="btn btn-outline-danger">Xóa</button>
+                            </form>
+                        </div>
+                    </td>
+                    {%endif%}
+                </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

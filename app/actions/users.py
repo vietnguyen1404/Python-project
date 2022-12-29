@@ -31,3 +31,4 @@ class User:
         collection = db["users"]
         doc = collection.find_one({"phone": phone, "password": password})
         return doc
+    

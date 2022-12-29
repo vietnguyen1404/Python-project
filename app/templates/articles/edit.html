@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-12">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <form name="update_user" id="update_user" action="/admin/articles/update" method="post" onSubmit="return confirm('Chỉnh sửa người dùng'?');">
+                        <div style="height: 0; opacity: 0; overflow: hidden;" class="form-group mb-3">
+                            <label class="mb-2">Id<span class="text-danger">*</span></label>
+                            <input value={{entry._id}} class="form-control" type="text" name="_id" placeholder="Id" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Tiêu đề<span class="text-danger">*</span></label>
+                            <input value={{entry.title}} class="form-control" type="text" name="title" placeholder="Tiêu đề" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Nội dung<span class="text-danger">*</span></label>
+                            <textarea style="box-shadow: none;" name="content" class="form-control" placeholder="Nhập nội dung..." required>{{entry.content}}</textarea>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Ngày tạo<span class="text-danger">*</span></label>
+                            <input value={{entry.created_at}} class="form-control" type="date" name="created_at" placeholder="Ngày tạo" required>
+                        </div>
+                        <div class="text-right d-grid gap-2 d-md-block">
+                            <button class="btn btn-success" type="submit" name="submit">Lưu</button>
+                            <a href="/admin/articles/list" class="btn btn-warning" type="button">Hủy bỏ</a>
+                          </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

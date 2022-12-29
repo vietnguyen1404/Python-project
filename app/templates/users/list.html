@@ -12,18 +12,18 @@
             <table align="center" class="table table-bordered table-hover table-responsive">
                 <thead>
                 <tr>
-                    <th>Họ và tên</th>
-                    <th class"text-center">Ngày sinh</th>
-                    <th>Chức vụ</th>
-                    <th class"text-center">Giới tính</th>
-                    <th class"text-center">Số điện thoại</th>
-                    <th>Địa chỉ</th>
-                    <th>Xác thực</th>
-                    <th>CMND/CCCD</th>
-                    <th>BHYT</th>
-                    <th class"text-center">Số lần tiêm</th>
-                    <th style="min-width: 200px;">Mô tả</th>
-                    <th class"text-center">Thao tác</th>
+                    <th class="align-top">Họ và tên</th>
+                    <th class"text-center align-top">Ngày sinh</th>
+                    <th class="align-top">Chức vụ</th>
+                    <th class"text-center align-top">Giới tính</th>
+                    <th class"text-center align-top">Số điện thoại</th>
+                    <th class="align-top">Địa chỉ</th>
+                    <th class="align-top">CMND/CCCD</th>
+                    <th class="align-top">BHYT</th>
+                    <th class"text-center align-top">Số lần tiêm</th>
+                    <th class="align-top" style="min-width: 200px;">Mô tả</th>
+                    <th class="text-center align-top" style="min-width: 135px;">Xác thực</th>
+                    <th class"text-center align-top">Thao tác</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -47,15 +47,19 @@
                     {% endif %}
                     <td class="align-middle">{{ entry.phone }}</td>
                     <td class="align-middle">{{ entry.village }}</td>
-                    {% if entry.enable == 1 %}
-                    <td class="align-middle">Đã xác thực</td>
-                    {% else %}
-                    <td class="align-middle">Chưa xác thực</td>
-                    {% endif %}
                     <td class="align-middle">{{ entry.card }}</td>
                     <td class="align-middle">{{ entry.health_insurance }}</td>
                     <td class="align-middle">{{ entry.vaccine | length}}</td>
                     <td class="align-middle">{{ entry.description }}</td>
+                    {% if entry.enable == 1 %}
+                    <td class="align-middle">
+                        <button class="btn btn-outline-success">Đã xác thực</button>
+                    </td>
+                    {% else %}
+                    <td class="align-middle">
+                        <button class="btn btn-outline-danger">Chưa xác thực</button>
+                    </td>
+                    {% endif %}
                     <td class="align-middle">
                         <div class="d-flex justify-content-center">
                             <a href="/admin/users/edit/{{entry._id}}" style="margin-right: 6px;" type="button" class="btn btn-outline-secondary">Sửa</a>

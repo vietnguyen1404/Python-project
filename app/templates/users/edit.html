@@ -70,12 +70,14 @@
                             <label name="vaccine" class="mb-2">Vaccine<span class="text-danger">*</span></label>
                             <div class="row">
                                     <table class="table table-bordered table-hover" id="dynamic_field">
-                                    <td><button type="button" name="add" id="add" class="btn btn-primary">Thêm</button></td> 
+                                        {%if role_login != 99%}
+                                        <button type="button" name="add" id="add" class="btn btn-primary">Thêm</button>
+                                        {% endif %}
                                         {% for vaccine in entry.vaccine%}
                                       <tr>
-                                        <td><input value={{vaccine.order}} multiple type="text" name="vaccine[][order]" placeholder="Thứ tự mũi tiêm" class="form-control" required/></td>
-                                        <td><input value={{vaccine.name}} multiple type="text" name="vaccine[][name]" placeholder="Tên thuốc" class="form-control" required/></td>
-                                        <td><input value={{vaccine.date}} multiple class="form-control" type="date" name="vaccine[][date]" placeholder="Ngày tiêm" required></td>
+                                        <td><input disabled value={{vaccine.order}} multiple type="text" name="vaccine[][order]" placeholder="Thứ tự mũi tiêm" class="form-control" required/></td>
+                                        <td><input disabled value={{vaccine.name}} multiple type="text" name="vaccine[][name]" placeholder="Tên thuốc" class="form-control" required/></td>
+                                        <td><input disabled value={{vaccine.date}} multiple class="form-control" type="date" name="vaccine[][date]" placeholder="Ngày tiêm" required></td>
                                         <td><button disabled type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td>
                                       </tr>
                                       {% endfor %}
@@ -98,10 +100,12 @@
                             <label class="mb-2">Ghi chú(dị ứng, bệnh nền,...)<span class="text-danger">*</span></label>
                             <input value={{entry.description}} class="form-control" type="text" name="description" placeholder="Ghi chú" required>
                         </div>
+                        {% if role_login != 99 %}
                         <div class="text-right d-grid gap-2 d-md-block">
                             <button class="btn btn-success" type="submit" name="submit">Lưu</button>
                             <a href="/admin/users/list" class="btn btn-warning" type="button">Hủy bỏ</a>
                           </div>
+                        {%endif%}
                     </form>
                 </div>
             </div>
