@@ -4,6 +4,7 @@ from app.actions.index import *
 from app.models.User import BaseUser
 from app.models.Vaccine import BaseVaccine
 from app.models.Article import BaseArticle
+from app.models.Village import BaseVillage
 from app.models.ConfigVaccine import BaseConfigVaccine
 # User controller
 
@@ -81,6 +82,14 @@ def update(id):
     villages = Village.findAll()
     return render_template('/users/edit.html', entry=entry, villages=villages, id_login=id_login, role_login=role_login)
 
+@app.route('/admin/users/change-status/<string:id>', methods=['POST'])
+def updateStatus(id):
+    try:
+        id_login
+    except NameError:
+        return redirect(url_for('login'))
+    User.changStatus(id)
+    return redirect(url_for('userList'))
 
 @app.route('/admin/users/update', methods=['POST'])
 def updateHandle():
@@ -107,6 +116,7 @@ def updateHandle():
     entry.enable = 1
     # Handle Vaccine
     form1 = form.to_dict(flat=False)
+    print(form1)
     orders = form1.get("vaccine[][order]")
     names = form1.get("vaccine[][name]")
     dates = form1.get("vaccine[][date]")
@@ -232,6 +242,7 @@ def handleCreateArticles():
     Article.appendOne(entry.__dict__)
     return redirect(url_for('articles'))
 
+
 @app.route('/admin/articles/update',  methods=['POST'])
 def handleUpdateArticles():
     form = request.form
@@ -244,12 +255,16 @@ def handleUpdateArticles():
     Article.updateOne(_id, entry.__dict__)
     return redirect(url_for('articles'))
 
+
 @app.route('/admin/articles/delete/<string:id>', methods=['POST'])
 def deleteArticles(id):
-    try: id_login
-    except NameError: return redirect(url_for('login'))
+    try:
+        id_login
+    except NameError:
+        return redirect(url_for('login'))
     Article.deleteOne(id)
     return redirect(url_for('articles'))
+
 
 @app.route('/admin/articles/edit/<string:id>')
 def updateArticles(id):
@@ -292,12 +307,16 @@ def handleCreateVaccines():
     Vaccine.appendOne(entry.__dict__)
     return redirect(url_for('vaccines'))
 
+
 @app.route('/admin/vaccines/delete/<string:id>', methods=['POST'])
 def deleteVaccines(id):
-    try: id_login
-    except NameError: return redirect(url_for('login'))
+    try:
+        id_login
+    except NameError:
+        return redirect(url_for('login'))
     Vaccine.deleteOne(id)
     return redirect(url_for('vaccines'))
+
 
 @app.route('/admin/vaccines/edit/<string:id>')
 def updateVaccines(id):
@@ -307,6 +326,7 @@ def updateVaccines(id):
         return redirect(url_for('login'))
     entry = Vaccine.findOne(id)
     return render_template('/vaccines/edit.html', entry=entry, id_login=id_login, role_login=role_login)
+
 
 @app.route('/admin/vaccines/update',  methods=['POST'])
 def handleUpdateVaccines():
@@ -318,3 +338,66 @@ def handleUpdateVaccines():
     entry.source = form.get("source")
     Vaccine.updateOne(_id, entry.__dict__)
     return redirect(url_for('vaccines'))
+
+# villages
+
+
+@app.route('/admin/villages/list')
+def villages():
+    try:
+        id_login
+    except NameError:
+        return redirect(url_for('login'))
+    entries = Village.findAll()
+    return render_template('/villages/list.html', entries=entries, role_login=role_login, id_login=id_login)
+
+
+@app.route('/admin/villages/create')
+def createVillages():
+    try:
+        id_login
+    except NameError:
+        return redirect(url_for('login'))
+    return render_template('/villages/create.html', id_login=id_login, role_login=role_login)
+
+
+@app.route('/admin/villages/create',  methods=['POST'])
+def handleCreateVillages():
+    form = request.form
+    # Handle form
+    entry = BaseVillage()
+    entry.name = form.get("name")
+    Village.appendOne(entry.__dict__)
+    return redirect(url_for('villages'))
+
+
+@app.route('/admin/villages/delete/<string:id>', methods=['POST'])
+def deleteVillages(id):
+    try:
+        id_login
+    except NameError:
+        return redirect(url_for('login'))
+    Village.deleteOne(id)
+    return redirect(url_for('villages'))
+
+
+@app.route('/admin/villages/edit/<string:id>')
+def updateVillages(id):
+    try:
+        id_login
+    except NameError:
+        return redirect(url_for('login'))
+    entry = Village.findOne(id)
+    print(entry, "village")
+    return render_template('/villages/edit.html', entry=entry, id_login=id_login, role_login=role_login)
+
+
+@app.route('/admin/villages/update',  methods=['POST'])
+def handleUpdateVillages():
+    form = request.form
+    # Handle form
+    _id = form.get("_id")
+    entry = BaseVillage()
+    entry.name = form.get("name")
+    Village.updateOne(_id, entry.__dict__)
+    return redirect(url_for('villages'))

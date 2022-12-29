@@ -32,7 +32,7 @@
                     <td class="align-middle">
                         <div class="d-flex justify-content-center">
                             <a href="/admin/articles/edit/{{entry._id}}" style="margin-right: 6px;" type="button" class="btn btn-outline-secondary">Sửa</a>
-                            <form action="/admin/articles/delete/{{entry._id}}" method="post">
+                            <form action="/admin/articles/delete/{{entry._id}}" method="post" onSubmit="return confirm('Xóa bài viết?');">
                                 <button type="submit" class="btn btn-outline-danger">Xóa</button>
                             </form>
                         </div>
@@ -41,7 +41,6 @@
                 </tr>
                 {% endfor %}
                 </tbody>
-
             </table>
         </div>
 

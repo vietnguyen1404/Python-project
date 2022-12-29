@@ -5,18 +5,18 @@
         <div class="col-lg-8 col-md-12">
             <div class="card mt-4">
                 <div class="card-body">
-                    <form name="update_user" id="update_user" action="/admin/users/update" method="post" onSubmit="return confirm('Chỉnh sửa người dùng'?');">
+                    <form name="update_user" id="update_user" action="/admin/users/update" method="post" onSubmit="return confirm('Chỉnh sửa người dùng?');">
                         <div style="height: 0; opacity: 0; overflow: hidden;" class="form-group mb-3">
                             <label class="mb-2">Id<span class="text-danger">*</span></label>
-                            <input value={{entry._id}} class="form-control" type="text" name="_id" placeholder="Id" required>
+                            <input value="{{entry._id}}" class="form-control" type="text" name="_id" placeholder="Id" required>
                         </div>
                         <div class="form-group mb-3">
                             <label class="mb-2">Họ và tên<span class="text-danger">*</span></label>
-                            <input value={{entry.name}} class="form-control" type="text" name="name" placeholder="Họ và tên" required>
+                            <input value="{{entry.name}}" class="form-control" type="text" name="name" placeholder="Họ và tên" required>
                         </div>
                         <div class="form-group mb-3">
                             <label class="mb-2">Ngày sinh<span class="text-danger">*</span></label>
-                            <input value={{entry.dob}} class="form-control" type="date" name="dob" placeholder="Ngày sinh" required>
+                            <input value="{{entry.dob}}" class="form-control" type="date" name="dob" placeholder="Ngày sinh" required>
                         </div>
                         <div class="form-group mb-3">
                             <label class="mb-2">Quyền<span class="text-danger">*</span></label>
@@ -75,10 +75,9 @@
                                         {% endif %}
                                         {% for vaccine in entry.vaccine%}
                                       <tr>
-                                        <td><input disabled value={{vaccine.order}} multiple type="text" name="vaccine[][order]" placeholder="Thứ tự mũi tiêm" class="form-control" required/></td>
-                                        <td><input disabled value={{vaccine.name}} multiple type="text" name="vaccine[][name]" placeholder="Tên thuốc" class="form-control" required/></td>
-                                        <td><input disabled value={{vaccine.date}} multiple class="form-control" type="date" name="vaccine[][date]" placeholder="Ngày tiêm" required></td>
-                                        <td><button disabled type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td>
+                                        <td><input value="{{vaccine.order}}" multiple type="text" name="vaccine[][order]" placeholder="Thứ tự mũi tiêm" class="form-control" required/></td>
+                                        <td><input value="{{vaccine.name}}" multiple type="text" name="vaccine[][name]" placeholder="Tên thuốc" class="form-control" required/></td>
+                                        <td><input value="{{vaccine.date}}" multiple class="form-control" type="date" name="vaccine[][date]" placeholder="Ngày tiêm" required></td>
                                       </tr>
                                       {% endfor %}
                                     </table>
@@ -86,19 +85,19 @@
                         </div>
                         <div class="form-group mb-3">
                             <label class="mb-2">Số bảo hiểm y tế<span class="text-danger">*</span></label>
-                            <input value={{entry.health_insurance}} class="form-control" type="text" name="health_insurance" placeholder="Số bảo hiểm y tế" required>
+                            <input value="{{entry.health_insurance}}" class="form-control" type="text" name="health_insurance" placeholder="Số bảo hiểm y tế" required>
                         </div>
                         <div class="form-group mb-3">
                             <label class="mb-2">Số chứng minh nhân dân<span class="text-danger">*</span></label>
-                            <input value={{entry.card}} class="form-control" type="text" name="card" placeholder="Số chứng minh nhân dân" required>
+                            <input value="{{entry.card}}" class="form-control" type="text" name="card" placeholder="Số chứng minh nhân dân" required>
                         </div>
                         <div class="form-group mb-3">
                             <label class="mb-2">Số điện thoại<span class="text-danger">*</span></label>
-                            <input value={{entry.phone}} class="form-control" type="text" name="phone" placeholder="Số điện thoại" required>
+                            <input value="{{entry.phone}}" class="form-control" type="text" name="phone" placeholder="Số điện thoại" required>
                         </div>
                         <div class="form-group mb-3">
                             <label class="mb-2">Ghi chú(dị ứng, bệnh nền,...)<span class="text-danger">*</span></label>
-                            <input value={{entry.description}} class="form-control" type="text" name="description" placeholder="Ghi chú" required>
+                            <input value="{{entry.description}}" class="form-control" type="text" name="description" placeholder="Ghi chú" required>
                         </div>
                         {% if role_login != 99 %}
                         <div class="text-right d-grid gap-2 d-md-block">

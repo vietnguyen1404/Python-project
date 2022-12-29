@@ -11,3 +11,16 @@ class Village:
         collection = db["villages"]
         doc = collection.find_one({"_id": ObjectId(id)})
         return doc
+    
+    def appendOne(entry):
+        collection = db["villages"]
+        collection.insert_one(entry)
+
+    def deleteOne(id):
+        collection = db["villages"]
+        collection.delete_one({"_id": ObjectId(id)})
+
+    def updateOne(_id, entry):
+        collection = db["villages"]
+        newEntry = {"$set": entry}
+        collection.update_one({"_id": ObjectId(_id)}, newEntry)

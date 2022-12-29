@@ -22,7 +22,7 @@
                     <th class="align-top">BHYT</th>
                     <th class"text-center align-top">Số lần tiêm</th>
                     <th class="align-top" style="min-width: 200px;">Mô tả</th>
-                    <th class="text-center align-top" style="min-width: 135px;">Xác thực</th>
+                    <th class="text-center align-top" style="min-width: 150px;">Xác thực</th>
                     <th class"text-center align-top">Thao tác</th>
                 </tr>
                 </thead>
@@ -51,19 +51,21 @@
                     <td class="align-middle">{{ entry.health_insurance }}</td>
                     <td class="align-middle">{{ entry.vaccine | length}}</td>
                     <td class="align-middle">{{ entry.description }}</td>
-                    {% if entry.enable == 1 %}
+                    <form action="/admin/users/change-status/{{entry._id}}" method="post" onSubmit="return confirm('Thay đổi trạng thái xác thực?');">
+                        {% if entry.enable == 1 %}
                     <td class="align-middle">
-                        <button class="btn btn-outline-success">Đã xác thực</button>
+                        <button type="submit" class="btn btn-outline-success">Đã xác thực</button>
                     </td>
                     {% else %}
                     <td class="align-middle">
-                        <button class="btn btn-outline-danger">Chưa xác thực</button>
+                        <button type="submit" class="btn btn-outline-danger">Chưa xác thực</button>
                     </td>
                     {% endif %}
+                    </form>
                     <td class="align-middle">
                         <div class="d-flex justify-content-center">
                             <a href="/admin/users/edit/{{entry._id}}" style="margin-right: 6px;" type="button" class="btn btn-outline-secondary">Sửa</a>
-                            <form action="/admin/users/delete/{{entry._id}}" method="post">
+                            <form action="/admin/users/delete/{{entry._id}}" method="post" onSubmit="return confirm('Xóa người dùng?');">
                                 <button type="submit" class="btn btn-outline-danger">Xóa</button>
                             </form>
                         </div>

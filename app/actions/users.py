@@ -32,3 +32,11 @@ class User:
         doc = collection.find_one({"phone": phone, "password": password})
         return doc
     
+    def changStatus(_id):
+        collection = db["users"]
+        doc = collection.find_one({"_id": ObjectId(_id)})
+        if doc["enable"] == 1:
+           doc["enable"] = 0
+        else:
+            doc["enable"] = 1
+        collection.update_one({"_id": ObjectId(_id)}, {"$set": doc})

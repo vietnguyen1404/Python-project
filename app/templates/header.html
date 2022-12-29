@@ -25,11 +25,16 @@
           {%endif%}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Tài khoản
+              {%if role_login == 1%}
+                Tài khoản xã
+              {%elif role_login == 2%}
+                Tài khoản cán bộ xử lý
+              {%else%}
+                Tài khoản
+              {%endif%}
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <li><a class="dropdown-item" href="/admin/users/edit/{{id_login}}">Thông tin</a></li>
-              <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
               <li><a class="dropdown-item" href="/auth/logout">Đăng xuất</a></li>
             </ul>
           </li>

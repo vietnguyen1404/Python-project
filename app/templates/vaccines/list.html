@@ -30,7 +30,7 @@
                     <td class="align-middle">
                         <div class="d-flex justify-content-center">
                             <a href="/admin/vaccines/edit/{{entry._id}}" style="margin-right: 6px;" type="button" class="btn btn-outline-secondary">Sửa</a>
-                            <form action="/admin/vaccines/delete/{{entry._id}}" method="post">
+                            <form action="/admin/vaccines/delete/{{entry._id}}" method="post" onSubmit="return confirm('Xóa vaccine?');">
                                 <button type="submit" class="btn btn-outline-danger">Xóa</button>
                             </form>
                         </div>
