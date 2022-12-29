@@ -12,18 +12,18 @@
             <table align="center" class="table table-bordered table-hover table-responsive">
                 <thead>
                 <tr>
-                    <th>Họ và tên</th>
-                    <th class"text-center">Ngày sinh</th>
-                    <th>Chức vụ</th>
-                    <th class"text-center">Giới tính</th>
-                    <th class"text-center">Số điện thoại</th>
-                    <th>Địa chỉ</th>
-                    <th>Xác thực</th>
-                    <th>CMND/CCCD</th>
-                    <th>BHYT</th>
-                    <th class"text-center">Số lần tiêm</th>
-                    <th style="min-width: 200px;">Mô tả</th>
-                    <th class"text-center">Thao tác</th>
+                    <th class="align-top">Họ và tên</th>
+                    <th class"text-center align-top">Ngày sinh</th>
+                    <th class="align-top">Chức vụ</th>
+                    <th class"text-center align-top">Giới tính</th>
+                    <th class"text-center align-top">Số điện thoại</th>
+                    <th class="align-top">Địa chỉ</th>
+                    <th class="align-top">CMND/CCCD</th>
+                    <th class="align-top">BHYT</th>
+                    <th class"text-center align-top">Số lần tiêm</th>
+                    <th class="align-top" style="min-width: 200px;">Mô tả</th>
+                    <th class="text-center align-top" style="min-width: 150px;">Xác thực</th>
+                    <th class"text-center align-top">Thao tác</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -47,19 +47,25 @@
                     {% endif %}
                     <td class="align-middle">{{ entry.phone }}</td>
                     <td class="align-middle">{{ entry.village }}</td>
-                    {% if entry.enable == 1 %}
-                    <td class="align-middle">Đã xác thực</td>
-                    {% else %}
-                    <td class="align-middle">Chưa xác thực</td>
-                    {% endif %}
                     <td class="align-middle">{{ entry.card }}</td>
                     <td class="align-middle">{{ entry.health_insurance }}</td>
                     <td class="align-middle">{{ entry.vaccine | length}}</td>
                     <td class="align-middle">{{ entry.description }}</td>
+                    <form action="/admin/users/change-status/{{entry._id}}" method="post" onSubmit="return confirm('Thay đổi trạng thái xác thực?');">
+                        {% if entry.enable == 1 %}
+                    <td class="align-middle">
+                        <button type="submit" class="btn btn-outline-success">Đã xác thực</button>
+                    </td>
+                    {% else %}
+                    <td class="align-middle">
+                        <button type="submit" class="btn btn-outline-danger">Chưa xác thực</button>
+                    </td>
+                    {% endif %}
+                    </form>
                     <td class="align-middle">
                         <div class="d-flex justify-content-center">
-                            <button style="margin-right: 6px;" type="button" class="btn btn-outline-secondary">Sửa</button>
-                            <form action="/admin/users/delete/{{entry._id}}" method="post">
+                            <a href="/admin/users/edit/{{entry._id}}" style="margin-right: 6px;" type="button" class="btn btn-outline-secondary">Sửa</a>
+                            <form action="/admin/users/delete/{{entry._id}}" method="post" onSubmit="return confirm('Xóa người dùng?');">
                                 <button type="submit" class="btn btn-outline-danger">Xóa</button>
                             </form>
                         </div>

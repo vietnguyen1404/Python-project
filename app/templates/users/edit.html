@@ -1,68 +1,114 @@
 {% extends "base.html" %}
-
 {% block content %}
-
 <div class="container">
-    <div>
-        <form action="/admin/users/create">
-            <button class="btn btn-primary" type="submit">
-                Thêm mới
-            </button>
-        </form>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-12">
+            <div class="card mt-4">
                 <div class="card-body">
-                    <form action="/add" method="post">
-                        <div class="form-group">
-                            <input class="form-control" type="text" name="title" placeholder="Title" required>
+                    <form name="update_user" id="update_user" action="/admin/users/update" method="post" onSubmit="return confirm('Chỉnh sửa người dùng?');">
+                        <div style="height: 0; opacity: 0; overflow: hidden;" class="form-group mb-3">
+                            <label class="mb-2">Id<span class="text-danger">*</span></label>
+                            <input value="{{entry._id}}" class="form-control" type="text" name="_id" placeholder="Id" required>
                         </div>
-                        <div class="form-group">
-                            <textarea class="form-control" name="description" cols="100"
-                                      placeholder="Add a Description" required></textarea>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Họ và tên<span class="text-danger">*</span></label>
+                            <input value="{{entry.name}}" class="form-control" type="text" name="name" placeholder="Họ và tên" required>
                         </div>
-                        
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Ngày sinh<span class="text-danger">*</span></label>
+                            <input value="{{entry.dob}}" class="form-control" type="date" name="dob" placeholder="Ngày sinh" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Quyền<span class="text-danger">*</span></label>
+                            <select name="position" class="form-select" aria-label="Chọn quyền" required>
+                                {% if entry.position == 1 %}
+                                <option value="1" selected>Cán bộ xã</option>
+                                <option value="2">Cán bộ xử lý</option>
+                                <option value="99">Người dân</option>
+                                {% elif entry.position == 2%}
+                                <option value="1">Cán bộ xã</option>
+                                <option value="2" selected>Cán bộ xử lý</option>
+                                <option value="99">Người dân</option>
+                                {% else %}
+                                <option value="1">Cán bộ xã</option>
+                                <option value="2">Cán bộ xử lý</option>
+                                <option value="99" selected>Người dân</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Giới tính<span class="text-danger">*</span></label>
+                            <select name="sex" class="form-select" aria-label="Chọn giới tính" required>
+                                {% if entry.sex == 1 %}
+                                <option value="1" selected>Nam</option>
+                                <option value="0">Nữ</option>
+                                <option value="2">Khác</option>
+                                {% elif entry.sex == 2%}
+                                <option value="1">Nam</option>
+                                <option value="0" selected>Nữ</option>
+                                <option value="2">Khác</option>
+                                {% else %}
+                                <option value="1">Nam</option>
+                                <option value="0">Nữ</option>
+                                <option value="2" selected>Khác</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Thôn<span class="text-danger">*</span></label>
+                            <select name="village_id" class="form-select" aria-label="Chọn thôn" required>
+                                {% for village in villages %}
+                                    {% if village._id == entry.village_id %}
+                                    <option value="{{village._id}}" selected>{{village.name}}</option>
+                                    {% else %}
+                                    <option value="{{village._id}}">{{village.name}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label name="vaccine" class="mb-2">Vaccine<span class="text-danger">*</span></label>
+                            <div class="row">
+                                    <table class="table table-bordered table-hover" id="dynamic_field">
+                                        {%if role_login != 99%}
+                                        <button type="button" name="add" id="add" class="btn btn-primary">Thêm</button>
+                                        {% endif %}
+                                        {% for vaccine in entry.vaccine%}
+                                      <tr>
+                                        <td><input value="{{vaccine.order}}" multiple type="text" name="vaccine[][order]" placeholder="Thứ tự mũi tiêm" class="form-control" required/></td>
+                                        <td><input value="{{vaccine.name}}" multiple type="text" name="vaccine[][name]" placeholder="Tên thuốc" class="form-control" required/></td>
+                                        <td><input value="{{vaccine.date}}" multiple class="form-control" type="date" name="vaccine[][date]" placeholder="Ngày tiêm" required></td>
+                                      </tr>
+                                      {% endfor %}
+                                    </table>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Số bảo hiểm y tế<span class="text-danger">*</span></label>
+                            <input value="{{entry.health_insurance}}" class="form-control" type="text" name="health_insurance" placeholder="Số bảo hiểm y tế" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Số chứng minh nhân dân<span class="text-danger">*</span></label>
+                            <input value="{{entry.card}}" class="form-control" type="text" name="card" placeholder="Số chứng minh nhân dân" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Số điện thoại<span class="text-danger">*</span></label>
+                            <input value="{{entry.phone}}" class="form-control" type="text" name="phone" placeholder="Số điện thoại" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Ghi chú(dị ứng, bệnh nền,...)<span class="text-danger">*</span></label>
+                            <input value="{{entry.description}}" class="form-control" type="text" name="description" placeholder="Ghi chú" required>
+                        </div>
+                        {% if role_login != 99 %}
+                        <div class="text-right d-grid gap-2 d-md-block">
+                            <button class="btn btn-success" type="submit" name="submit">Lưu</button>
+                            <a href="/admin/users/list" class="btn btn-warning" type="button">Hủy bỏ</a>
+                          </div>
+                        {%endif%}
                     </form>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-6">
-            <table class="table table-bordered table-hover">
-                <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for entry in entries %}
-                <tr>
-                    <td>{{ entry._id }}</td>
-                    <td><strong>{{ entry.name }}</strong></td>
-                    <td>
-                        <a class="{{ 'btn btn-success' if entry.status else 'btn btn-dark'}}"
-                           href="/turn/{{ entry._id }}">
-                            Turn Status
-                        </a>
-                        <a class="btn btn-danger"
-                           href="/delete/{{ entry._id }}">
-                            Delete
-                        </a>
-                        <a class="btn btn-info"
-                           href="/update/{{ entry._id }}">
-                            Edit
-                        </a>
-                    </td>
-                </tr>
-                {% endfor %}
-                </tbody>
-
-            </table>
-        </div>
-
     </div>
 </div>
-
 {% endblock %}

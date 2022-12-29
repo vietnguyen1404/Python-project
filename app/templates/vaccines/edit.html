@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-12">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <form name="update_user" id="update_user" action="/admin/vaccines/update" method="post" onSubmit="return confirm('Chỉnh sửa vaccine?');">
+                        <div style="height: 0; opacity: 0; overflow: hidden;" class="form-group mb-3">
+                            <label class="mb-2">Id<span class="text-danger">*</span></label>
+                            <input value="{{entry._id}}" class="form-control" type="text" name="_id" placeholder="Id" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Tên vaccine<span class="text-danger">*</span></label>
+                            <input value="{{entry.name}}" class="form-control" type="text" name="name" placeholder="Tên vaccine" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Xuất xứ<span class="text-danger">*</span></label>
+                            <input value="{{entry.source}}" class="form-control" type="text" name="source" placeholder="Xuất xứ" required>
+                        </div>
+                        <div class="text-right d-grid gap-2 d-md-block">
+                            <button class="btn btn-success" type="submit" name="submit">Lưu</button>
+                            <a href="/admin/vaccines/list" class="btn btn-warning" type="button">Hủy bỏ</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
