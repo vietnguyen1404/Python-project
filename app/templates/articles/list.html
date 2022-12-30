@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<style>
+    .text-center {
+        text-align: center;
+    }
+</style>
 <div class="container">
     <div class="text-right my-3">
         {%if role_login == 1%}
@@ -14,11 +18,11 @@
             <table align="center" class="table table-bordered table-hover table-responsive">
                 <thead>
                 <tr>
-                    <th class="align-top">Tiêu đề</th>
-                    <th class"text-center align-top">Nội dung</th>
+                    <th style="min-width: 200px;" class="align-top">Tiêu đề</th>
+                    <th  style="text-align: center; vertical-align: text-top" class"align-top">Nội dung</th>
                     <th class="align-top">Ngày tạo</th>
                     {%if role_login == 1%}
-                    <th class"text-center align-top">Thao tác</th>
+                    <th style="vertical-align: text-top" class"text-center align-top">Thao tác</th>
                     {%endif%}
                 </tr>
                 </thead>
