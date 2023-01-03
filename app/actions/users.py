@@ -4,9 +4,13 @@ db = connect()
 
 
 class User:
-    def findAll():
+    def findAll(search):
         collection = db["users"]
-        docs = collection.find({})
+        docs = collection.find({'$or' : [
+        { 'name': { '$regex': search, '$options': 'i' } },
+        { 'card': { '$regex': search, '$options': 'i' } },
+        { 'phone': { '$regex': search, '$options': 'i' } }
+    ]})
         return docs
 
     def findOne(id):
@@ -26,17 +30,17 @@ class User:
     def deleteOne(id):
         collection = db["users"]
         collection.delete_one({"_id": ObjectId(id)})
-    
+
     def findLogin(phone, password):
         collection = db["users"]
         doc = collection.find_one({"phone": phone, "password": password})
         return doc
-    
+
     def changStatus(_id):
         collection = db["users"]
         doc = collection.find_one({"_id": ObjectId(_id)})
         if doc["enable"] == 1:
-           doc["enable"] = 0
+            doc["enable"] = 0
         else:
             doc["enable"] = 1
         collection.update_one({"_id": ObjectId(_id)}, {"$set": doc})

@@ -8,16 +8,25 @@ from app.models.Village import BaseVillage
 from app.models.ConfigVaccine import BaseConfigVaccine
 
 # page list user
+
+
 @app.route('/admin/users/list')
 def userList():
     try:
         id_login
     except NameError:
         return redirect(url_for('login'))
-    entries = User.findAll()
-    return render_template('/users/list.html', entries=entries,  id_login=id_login, role_login=role_login)
+    req = request.args.to_dict()
+    search = req.get("search")
+    if search == None:
+        search = ""
+    entries = User.findAll(search)
+    size = list(entries.clone()).__len__()
+    return render_template('/users/list.html', entries=entries,  id_login=id_login, role_login=role_login, search=search, size=size)
 
 # page create user
+
+
 @app.route('/admin/users/create', methods=['GET'])
 def userCreate():
     try:
@@ -29,6 +38,8 @@ def userCreate():
     return render_template('/users/create.html', villages=villages, vaccines=vaccines, id_login=id_login, role_login=role_login)
 
 # api create user
+
+
 @app.route('/admin/users/create', methods=['POST'])
 def userCreatePost():
     try:
@@ -70,7 +81,9 @@ def userCreatePost():
     # To page list user
     return redirect(url_for('userList'))
 
-#page edit user
+# page edit user
+
+
 @app.route('/admin/users/edit/<string:id>')
 def update(id):
     try:
@@ -81,7 +94,9 @@ def update(id):
     villages = Village.findAll()
     return render_template('/users/edit.html', entry=entry, villages=villages, id_login=id_login, role_login=role_login)
 
-#page change status user
+# page change status user
+
+
 @app.route('/admin/users/change-status/<string:id>', methods=['POST'])
 def updateStatus(id):
     try:
@@ -91,6 +106,8 @@ def updateStatus(id):
     User.changStatus(id)
     return redirect(url_for('userList'))
 # api change status user
+
+
 @app.route('/admin/users/update', methods=['POST'])
 def updateHandle():
     try:
@@ -134,7 +151,9 @@ def updateHandle():
     # To page list user
     return redirect(url_for('userList'))
 
-#api delete user
+# api delete user
+
+
 @app.route('/admin/users/delete/<string:id>', methods=['POST'])
 def delete(id):
     try:
@@ -148,17 +167,23 @@ def delete(id):
 
 # Start auth
 
-#page login
+# page login
+
+
 @app.route('/')
 def notFound():
     return redirect(url_for('login'))
 
-#page login
+# page login
+
+
 @app.route('/auth/login')
 def login():
     return render_template('/auth/login.html', check=False)
 
-#api login
+# api login
+
+
 @app.route('/auth/login', methods=['POST'])
 def checkLogin():
     form = request.form
@@ -175,13 +200,17 @@ def checkLogin():
         role_login = entry['position']
         return redirect(url_for('articles'))
 
-#page register
+# page register
+
+
 @app.route('/auth/register')
 def register():
     villages = Village.findAll()
     return render_template('/auth/register.html', villages=villages)
 
-#api register
+# api register
+
+
 @app.route('/auth/register', methods=['POST'])
 def handleRegister():
     # Get data form
@@ -206,43 +235,63 @@ def handleRegister():
     # To page list user
     return redirect(url_for('login'))
 
-#handle logout
+# handle logout
+
+
 @app.route('/auth/logout')
 def logout():
     return redirect(url_for('login'))
 
-#page articles
+# page articles
+
+
 @app.route('/admin/articles/list')
 def articles():
     try:
         id_login
     except NameError:
         return redirect(url_for('login'))
-    entries = Article.findAll()
-    return render_template('/articles/list.html', entries=entries, role_login=role_login, id_login=id_login)
+    req = request.args.to_dict()
+    title = req.get("title")
+    if title == None:
+        title = ""
+    entries = []
+    entries = Article.findAll(title)
+    size = list(entries.clone()).__len__()
+    return render_template('/articles/list.html', entries=entries, role_login=role_login, id_login=id_login, title=title, size=size)
 
-#page create articles
+# page create articles
+
+
 @app.route('/admin/articles/create')
 def createArticles():
     try:
         id_login
     except NameError:
         return redirect(url_for('login'))
-    return render_template('/articles/create.html', id_login=id_login, role_login=role_login)
+    villages = Village.findAll()
+    return render_template('/articles/create.html', id_login=id_login, role_login=role_login, villages=villages)
 
-#api create articles
+# api create articles
+
+
 @app.route('/admin/articles/create',  methods=['POST'])
 def handleCreateArticles():
     form = request.form
     # Handle form
     entry = BaseArticle()
+    print(entry)
     entry.title = form.get("title")
     entry.content = form.get("content")
     entry.created_at = form.get("created_at")
+    entry.village_id = form.get("village_id")
+    entry.village = Village.findOne(entry.village_id)["name"]
     Article.appendOne(entry.__dict__)
     return redirect(url_for('articles'))
 
-#api edit articles
+# api edit articles
+
+
 @app.route('/admin/articles/update',  methods=['POST'])
 def handleUpdateArticles():
     form = request.form
@@ -252,10 +301,14 @@ def handleUpdateArticles():
     entry.title = form.get("title")
     entry.content = form.get("content")
     entry.created_at = form.get("created_at")
+    entry.village_id = form.get("village_id")
+    entry.village = Village.findOne(entry.village_id)["name"]
     Article.updateOne(_id, entry.__dict__)
     return redirect(url_for('articles'))
 
-#api delete articles
+# api delete articles
+
+
 @app.route('/admin/articles/delete/<string:id>', methods=['POST'])
 def deleteArticles(id):
     try:
@@ -265,7 +318,9 @@ def deleteArticles(id):
     Article.deleteOne(id)
     return redirect(url_for('articles'))
 
-#page edit articles
+# page edit articles
+
+
 @app.route('/admin/articles/edit/<string:id>')
 def updateArticles(id):
     try:
@@ -273,11 +328,14 @@ def updateArticles(id):
     except NameError:
         return redirect(url_for('login'))
     entry = Article.findOne(id)
-    return render_template('/articles/edit.html', entry=entry, id_login=id_login, role_login=role_login)
+    villages = Village.findAll()
+    return render_template('/articles/edit.html', entry=entry, id_login=id_login, role_login=role_login, villages=villages)
 
 # vaccine
 
-#page list vaccine 
+# page list vaccine
+
+
 @app.route('/admin/vaccines/list')
 def vaccines():
     try:
@@ -287,7 +345,9 @@ def vaccines():
     entries = Vaccine.findAll()
     return render_template('/vaccines/list.html', entries=entries, role_login=role_login, id_login=id_login)
 
-#page create vaccine 
+# page create vaccine
+
+
 @app.route('/admin/vaccines/create')
 def createVaccines():
     try:
@@ -296,7 +356,9 @@ def createVaccines():
         return redirect(url_for('login'))
     return render_template('/vaccines/create.html', id_login=id_login, role_login=role_login)
 
-#api create vaccine 
+# api create vaccine
+
+
 @app.route('/admin/vaccines/create',  methods=['POST'])
 def handleCreateVaccines():
     form = request.form
@@ -307,7 +369,9 @@ def handleCreateVaccines():
     Vaccine.appendOne(entry.__dict__)
     return redirect(url_for('vaccines'))
 
-#api delete vaccine 
+# api delete vaccine
+
+
 @app.route('/admin/vaccines/delete/<string:id>', methods=['POST'])
 def deleteVaccines(id):
     try:
@@ -317,7 +381,9 @@ def deleteVaccines(id):
     Vaccine.deleteOne(id)
     return redirect(url_for('vaccines'))
 
-#page edit vaccine 
+# page edit vaccine
+
+
 @app.route('/admin/vaccines/edit/<string:id>')
 def updateVaccines(id):
     try:
@@ -327,7 +393,9 @@ def updateVaccines(id):
     entry = Vaccine.findOne(id)
     return render_template('/vaccines/edit.html', entry=entry, id_login=id_login, role_login=role_login)
 
-#api edit vaccine 
+# api edit vaccine
+
+
 @app.route('/admin/vaccines/update',  methods=['POST'])
 def handleUpdateVaccines():
     form = request.form
@@ -341,7 +409,9 @@ def handleUpdateVaccines():
 
 # villages
 
-#page list villages
+# page list villages
+
+
 @app.route('/admin/villages/list')
 def villages():
     try:
@@ -351,7 +421,9 @@ def villages():
     entries = Village.findAll()
     return render_template('/villages/list.html', entries=entries, role_login=role_login, id_login=id_login)
 
-#page create villages
+# page create villages
+
+
 @app.route('/admin/villages/create')
 def createVillages():
     try:
@@ -360,7 +432,9 @@ def createVillages():
         return redirect(url_for('login'))
     return render_template('/villages/create.html', id_login=id_login, role_login=role_login)
 
-#api create villages
+# api create villages
+
+
 @app.route('/admin/villages/create',  methods=['POST'])
 def handleCreateVillages():
     form = request.form
@@ -370,7 +444,9 @@ def handleCreateVillages():
     Village.appendOne(entry.__dict__)
     return redirect(url_for('villages'))
 
-#api delete villages
+# api delete villages
+
+
 @app.route('/admin/villages/delete/<string:id>', methods=['POST'])
 def deleteVillages(id):
     try:
@@ -380,7 +456,9 @@ def deleteVillages(id):
     Village.deleteOne(id)
     return redirect(url_for('villages'))
 
-#page edit villages
+# page edit villages
+
+
 @app.route('/admin/villages/edit/<string:id>')
 def updateVillages(id):
     try:
@@ -391,7 +469,9 @@ def updateVillages(id):
     print(entry, "village")
     return render_template('/villages/edit.html', entry=entry, id_login=id_login, role_login=role_login)
 
-#api edit villages
+# api edit villages
+
+
 @app.route('/admin/villages/update',  methods=['POST'])
 def handleUpdateVillages():
     form = request.form

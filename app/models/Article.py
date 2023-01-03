@@ -3,3 +3,5 @@ class BaseArticle:
             self.title = "",
             self.content = "",
             self.created_at = "",
+            self.village_id = "",
+            self.village=""

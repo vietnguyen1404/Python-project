@@ -7,6 +7,16 @@
     }
 </style>
 <div class="container">
+    <form name="search_articles" id="search_articles" action="/admin/articles/list" method="get">
+        <div class="form-group my-3 row">
+            <div class="col col-lg-3 col-md-6 col-10">
+                <input value="{{title}}" class="form-control" type="text" name="title" placeholder="Nhập tiêu đề">
+            </div>
+            <div class="col-2">
+                <button class="btn btn-success" type="submit">Tìm kiếm</button>
+            </div>
+        </div>
+    </form>
     <div class="text-right my-3">
         {%if role_login == 1%}
         <a href="/admin/articles/create" class="btn btn-primary" type="submit">
@@ -15,11 +25,19 @@
         {%endif%}
     </div>
         <div class="col-md-12">
+            {%if size == 0%}
+                <div class="col-12">
+                    <div class="row bg-secondary p-3 rounded m-auto">
+                        <h5 class="text-center text-white">Không có dữ liệu</h5>
+                    </div>
+                </div>
+            {% else %}
             <table align="center" class="table table-bordered table-hover table-responsive">
                 <thead>
                 <tr>
                     <th style="min-width: 200px;" class="align-top">Tiêu đề</th>
                     <th  style="text-align: center; vertical-align: text-top" class"align-top">Nội dung</th>
+                    <th class="align-top">Thôn</th>
                     <th class="align-top">Ngày tạo</th>
                     {%if role_login == 1%}
                     <th style="vertical-align: text-top" class"text-center align-top">Thao tác</th>
@@ -31,6 +49,7 @@
                 <tr>
                     <td class="align-middle">{{ entry.title }}</td>
                     <td class="align-middle">{{ entry.content }}</td>
+                    <td class="align-middle">{{ entry.village }}</td>
                     <td class="align-middle">{{ entry.created_at }}</td>
                     {%if role_login == 1%}
                     <td class="align-middle">
@@ -46,6 +65,7 @@
                 {% endfor %}
                 </tbody>
             </table>
+            {%endif%}
         </div>
 
     </div>
