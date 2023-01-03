@@ -3,12 +3,29 @@
 {% block content %}
 
 <div class="container">
+    <form name="search_user" id="search_user" action="/admin/users/list" method="get">
+        <div class="form-group my-3 row">
+            <div class="col col-lg-3 col-md-6 col-10">
+                <input value="{{search}}" class="form-control" type="text" name="search" placeholder="Họ tên, CMND/CCCD, điện thoại">
+            </div>
+            <div class="col-2">
+                <button class="btn btn-success" type="submit">Tìm kiếm</button>
+            </div>
+        </div>
+    </form>
     <div class="text-right my-3">
         <a href="/admin/users/create" class="btn btn-primary" type="submit">
             Thêm mới
         </a>
     </div>
         <div class="col-md-12">
+            {%if size == 0%}
+                <div class="col-12">
+                    <div class="row bg-secondary p-3 rounded m-auto">
+                        <h5 class="text-center text-white">Không có dữ liệu</h5>
+                    </div>
+                </div>
+            {% else %}
             <table align="center" class="table table-bordered table-hover table-responsive">
                 <thead>
                 <tr>
@@ -23,7 +40,9 @@
                     <th class"text-center align-top">Số lần tiêm</th>
                     <th class="align-top" style="min-width: 200px;">Mô tả</th>
                     <th class="text-center align-top" style="min-width: 150px;">Xác thực</th>
+                    {% if role_login == 1 or role_login == 2%}
                     <th class"text-center align-top">Thao tác</th>
+                    {% endif %}
                 </tr>
                 </thead>
                 <tbody>
@@ -54,27 +73,37 @@
                     <form action="/admin/users/change-status/{{entry._id}}" method="post" onSubmit="return confirm('Thay đổi trạng thái xác thực?');">
                         {% if entry.enable == 1 %}
                     <td class="align-middle">
+                        {% if role_login == 1 or role_login == 2 and entry.position == 99%}
                         <button type="submit" class="btn btn-outline-success">Đã xác thực</button>
+                        {% else %}
+                        <button disabled type="submit" class="btn btn-success">Đã xác thực</button>
+                        {% endif %}
                     </td>
                     {% else %}
                     <td class="align-middle">
+                        {% if role_login == 1 or role_login == 2 and entry.position == 99%}
                         <button type="submit" class="btn btn-outline-danger">Chưa xác thực</button>
+                        {% else %}
+                        <button disabled type="submit" class="btn btn-danger">Chưa xác thực</button>
+                        {% endif %}
                     </td>
                     {% endif %}
                     </form>
                     <td class="align-middle">
+                    {% if role_login == 1 or role_login == 2 and entry.position == 99%}
                         <div class="d-flex justify-content-center">
                             <a href="/admin/users/edit/{{entry._id}}" style="margin-right: 6px;" type="button" class="btn btn-outline-secondary">Sửa</a>
                             <form action="/admin/users/delete/{{entry._id}}" method="post" onSubmit="return confirm('Xóa người dùng?');">
                                 <button type="submit" class="btn btn-outline-danger">Xóa</button>
                             </form>
                         </div>
+                    {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
                 </tbody>
-
             </table>
+            {%endif%}
         </div>
 
     </div>

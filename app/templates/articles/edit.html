@@ -22,6 +22,18 @@
                             <label class="mb-2">Ngày tạo<span class="text-danger">*</span></label>
                             <input value="{{entry.created_at}}" class="form-control" type="date" name="created_at" placeholder="Ngày tạo" required>
                         </div>
+                        <div class="form-group mb-3">
+                            <label class="mb-2">Thôn<span class="text-danger">*</span></label>
+                            <select name="village_id" class="form-select" aria-label="Chọn thôn" required>
+                                {% for village in villages %}
+                                    {% if village._id == entry.village_id %}
+                                        <option value="{{village._id}}" selected>{{village.name}}</option>
+                                    {% else %}
+                                        <option value="{{village._id}}">{{village.name}}</option>
+                                    {%endif%}
+                                {% endfor %}
+                            </select>
+                        </div>
                         <div class="text-right d-grid gap-2 d-md-block">
                             <button class="btn btn-success" type="submit" name="submit">Lưu</button>
                             <a href="/admin/articles/list" class="btn btn-warning" type="button">Hủy bỏ</a>

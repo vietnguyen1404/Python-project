@@ -4,9 +4,9 @@ db = connect()
 
 
 class Article:
-    def findAll():
+    def findAll(title):
         collection = db["articles"]
-        docs = collection.find({})
+        docs = collection.find({'title': {'$regex': title, '$options': 'i'}})
         return docs
 
     def appendOne(entry):

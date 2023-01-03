@@ -7,6 +7,7 @@ class Village:
         collection = db["villages"]
         docs = collection.find({})
         return docs
+    
     def findOne(id):
         collection = db["villages"]
         doc = collection.find_one({"_id": ObjectId(id)})
